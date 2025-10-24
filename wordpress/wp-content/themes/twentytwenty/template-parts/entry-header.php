@@ -1,80 +1,125 @@
 <?php
-/**
- * Displays the post header
- *
- * @package WordPress
- * @subpackage Twenty_Twenty
- * @since Twenty Twenty 1.0
- */
+// Bắt đầu cấu trúc mới cho danh sách bài viết (trang chủ, danh mục, tìm kiếm,...)
+if (! is_singular()) :
+?>
+	<div class="container">
+		<article <?php post_class('custom-post-item'); ?> id="post-<?php the_ID(); ?>">
 
-$entry_header_classes = '';
+			<a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>" class="full-link-wrap" style="text-decoration: none; color: inherit;">
 
-if ( is_singular() ) {
-	$entry_header_classes .= ' header-footer-group';
-}
+				<div class="custom-post-wrap">
+					<div class="custom-post-date">
+						<div class="day-large">
+							<?php the_time('d'); ?>
+						</div>
+						<div class="month-small">
+							<?php
+							// Lấy Tháng bằng số và thêm chữ THÁNG (Tiếng Việt)
+							echo 'THÁNG ' . get_the_time('m');
+							?>
+						</div>
+					</div>
 
+					<div class="custom-post-divider"></div>
+
+					<div class="custom-post-content">
+						<h2 class="entry-title">
+							<?php the_title(); ?>
+						</h2>
+						<div class="entry-excerpt">
+							<?php the_excerpt(); ?>
+						</div>
+					</div>
+				</div>
+			</a>
+		</article>
+	</div>
+
+
+<?php
+endif; // Kết thúc is_singular()
 ?>
 
-<header class="entry-header has-text-align-center<?php echo esc_attr( $entry_header_classes ); ?>">
+<style>
+	/* Bố cục chính */
+	.custom-post-wrap {
+		display: flex;
+		align-items: stretch;
+		border: 1px solid #ddd;
+		margin-bottom: 20px;
+		background: #fff;
+		text-decoration: none;
+		padding: 15px 20px;
+	}
 
-	<div class="entry-header-inner section-inner medium">
+	/* Ô ngày-tháng */
+	.custom-post-date {
+		width: 80px;
+		text-align: center;
+		font-family: Arial, sans-serif;
+		padding-right: 10px;
+	}
 
-		<?php
-		/**
-		 * Allow child themes and plugins to filter the display of the categories in the entry header.
-		 *
-		 * @since Twenty Twenty 1.0
-		 *
-		 * @param bool Whether to show the categories in header. Default true.
-		 */
-		$show_categories = apply_filters( 'twentytwenty_show_categories_in_entry_header', true );
+	.custom-post-date .day-large {
+		font-size: 36px;
+		font-weight: bold;
+		color: #222;
+		line-height: 1;
+	}
 
-		if ( true === $show_categories && has_category() ) {
-			?>
+	.custom-post-date .month-small {
+		font-size: 12px;
+		color: #666;
+		margin-top: 5px;
+		text-transform: uppercase;
+	}
 
-			<div class="entry-categories">
-				<span class="screen-reader-text">
-					<?php
-					/* translators: Hidden accessibility text. */
-					_e( 'Categories', 'twentytwenty' );
-					?>
-				</span>
-				<div class="entry-categories-inner">
-					<?php the_category( ' ' ); ?>
-				</div><!-- .entry-categories-inner -->
-			</div><!-- .entry-categories -->
+	/* Vạch chia dọc */
+	.custom-post-divider {
+		width: 1px;
+		background: #ccc;
+		margin: 0 15px;
+	}
 
-			<?php
+	/* Nội dung bên phải */
+	.custom-post-content {
+		flex: 1;
+	}
+
+	.custom-post-content .entry-title {
+		font-size: 16px;
+		font-weight: bold;
+		margin: 0 0 6px;
+		color: #1e5799;
+		/* xanh đậm */
+		text-transform: uppercase;
+	}
+
+	.custom-post-content .entry-excerpt {
+		font-size: 13px;
+		color: #444;
+		line-height: 1.5;
+	}
+
+	/* Responsive */
+	@media (max-width: 768px) {
+		.custom-post-wrap {
+			flex-direction: column;
+			padding: 15px;
 		}
 
-		if ( is_singular() ) {
-			the_title( '<h1 class="entry-title">', '</h1>' );
-		} else {
-			the_title( '<h2 class="entry-title heading-size-1"><a href="' . esc_url( get_permalink() ) . '">', '</a></h2>' );
+		.custom-post-date {
+			text-align: left;
+			margin-bottom: 10px;
+			width: auto;
 		}
 
-		$intro_text_width = '';
-
-		if ( is_singular() ) {
-			$intro_text_width = ' small';
-		} else {
-			$intro_text_width = ' thin';
+		.custom-post-divider {
+			display: none;
 		}
 
-		if ( has_excerpt() && is_singular() ) {
-			?>
-
-			<div class="intro-text section-inner max-percentage<?php echo $intro_text_width; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static output ?>">
-				<?php the_excerpt(); ?>
-			</div>
-
-			<?php
+		.custom-post-content .entry-title {
+			font-size: 15px;
 		}
-
-		// Default to displaying the post meta.
-		twentytwenty_the_post_meta( get_the_ID(), 'single-top' );
-		?>
-
-	</div><!-- .entry-header-inner -->
-
-</header><!-- .entry-header -->
+	}
+</style>
