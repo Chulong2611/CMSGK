@@ -8,6 +8,7 @@ if (! is_singular()) :
 			<a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>" class="full-link-wrap" style="text-decoration: none; color: inherit;">
 
 				<div class="custom-post-wrap">
+					
 					<div class="custom-post-date">
 						<div class="day-large">
 							<?php the_time('d'); ?>
