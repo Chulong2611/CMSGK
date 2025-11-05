@@ -865,3 +865,20 @@ function custom_submit_comment_callback() {
         wp_send_json_error();
     }
 }
+
+// =============================
+/**
+ * Đăng ký khu vực widget cho sidebar trái của bài viết.
+ */
+function twentytwenty_child_widgets_init() {
+    register_sidebar( array(
+        'name'          => __( 'Sidebar Trái Bài Viết', 'twentytwenty-child' ),
+        'id'            => 'single-post-left-sidebar',
+        'description'   => __( 'Hiển thị ở bên trái trang chi tiết bài viết.', 'twentytwenty-child' ),
+        'before_widget' => '<section id="%1$s" class="widget %2$s">',
+        'after_widget'  => '</section>',
+        'before_title'  => '<h2 class="widget-title">',
+        'after_title'   => '</h2>',
+    ) );
+}
+add_action( 'widgets_init', 'twentytwenty_child_widgets_init' );
