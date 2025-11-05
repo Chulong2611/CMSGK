@@ -146,6 +146,7 @@ get_header();
 
         <!--  Hiển thị bài viết liên quan -->
         <?php
+        get_template_part( 'template-parts/navigation' );
         $categories = get_the_category($post->ID);
         if ($categories) {
             $category_ids = array_map(function ($cat) {
