@@ -31,11 +31,11 @@ get_header();
     <div class="container single-container py-5">
         <div class="row justify-content-center">
 
-        <aside id="single-post-sidebar" class="widget-area col-lg-2 col-md-1 col-sm-2 me-4">
-                    <?php dynamic_sidebar('single-post-left-sidebar'); ?>
-                </aside>
-            <div class="col-lg-10 col-md-11 col-sm-10">
-                
+            <aside id="single-post-sidebar-left" class="widget-area col-lg-2 col-md-1 col-sm-2 me-4">
+                <?php dynamic_sidebar('single-post-left-sidebar'); ?>
+            </aside>
+            <div class="col-lg-8 col-md-10 col-sm-8">
+
                 <?php
                 if (have_posts()) :
                     while (have_posts()) : the_post();
@@ -62,6 +62,9 @@ get_header();
                 ?>
 
             </div>
+            <aside id="single-post-sidebar-right" class="widget-area col-lg-2 col-md-1 col-sm-2 me-4">
+                <?php dynamic_sidebar('single-post-right-sidebar'); ?>
+            </aside>
         </div>
 
 
