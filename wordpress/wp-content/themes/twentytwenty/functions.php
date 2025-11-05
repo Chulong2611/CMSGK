@@ -817,3 +817,51 @@ function twentytwenty_get_elements_array() {
 	 */
 	return apply_filters( 'twentytwenty_get_elements_array', $elements );
 }
+
+
+//theme add fontawesome7
+function add_fontawesome7_to_theme() {
+    wp_enqueue_style( 'font-awesome-7', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css' );
+}
+add_action( 'wp_enqueue_scripts', 'add_fontawesome7_to_theme' );
+
+
+function custom_comment_item($comment, $args, $depth) {
+    ?>
+    <li <?php comment_class('comment'); ?> id="comment-<?php echo $comment->comment_ID; ?>">
+        <div class="comment-author mb-1"><?php echo get_comment_author(); ?></div>
+        <div class="comment-meta"><?php echo get_comment_date(); ?></div>
+        <div class="comment-text mb-2"><?php echo get_comment_text(); ?></div>
+
+        <button class="btn btn-reply" data-commentid="<?php echo $comment->comment_ID; ?>"> Reply
+        </button>
+
+        <?php if ($depth < 3) : ?>
+            <ul class="comment-reply list-unstyled">
+                <?php wp_list_comments(['callback' => 'custom_comment_item', 'style' => 'ul'], get_comments(['parent' => $comment->comment_ID])); ?>
+            </ul>
+        <?php endif; ?>
+    </li>
+    <?php
+}
+
+// =============================
+// Xử lý AJAX bình luận
+add_action('wp_ajax_custom_submit_comment', 'custom_submit_comment_callback');
+add_action('wp_ajax_nopriv_custom_submit_comment', 'custom_submit_comment_callback');
+
+function custom_submit_comment_callback() {
+    $commentdata = [
+        'comment_post_ID' => intval($_POST['comment_post_ID']),
+        'comment_content' => sanitize_text_field($_POST['comment']),
+        'comment_parent'  => intval($_POST['comment_parent']),
+        'user_id'         => get_current_user_id(),
+    ];
+
+    $comment_id = wp_new_comment($commentdata);
+    if ($comment_id) {
+        wp_send_json_success(['id' => $comment_id]);
+    } else {
+        wp_send_json_error();
+    }
+}
