@@ -880,5 +880,14 @@ function twentytwenty_child_widgets_init() {
         'before_title'  => '<h2 class="widget-title">',
         'after_title'   => '</h2>',
     ) );
+	register_sidebar( array(
+        'name'          => __( 'Sidebar Phải Bài Viết', 'twentytwenty-child' ),
+        'id'            => 'single-post-right-sidebar',
+        'description'   => __( 'Hiển thị ở bên phải trang chi tiết bài viết.', 'twentytwenty-child' ),
+        'before_widget' => '<section id="%1$s" class="widget %2$s">',
+        'after_widget'  => '</section>',
+        'before_title'  => '<h2 class="widget-title">',
+        'after_title'   => '</h2>',
+    ) );
 }
 add_action( 'widgets_init', 'twentytwenty_child_widgets_init' );
