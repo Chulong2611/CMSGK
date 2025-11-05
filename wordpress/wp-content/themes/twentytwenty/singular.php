@@ -30,7 +30,11 @@ get_header();
 
     <div class="container single-container py-5">
         <div class="row justify-content-center">
-            <div class="col-lg-10 col-md-11 col-sm-12">
+
+            <aside id="single-post-sidebar-left" class="widget-area col-lg-2 col-md-1 col-sm-2 me-4">
+                <?php dynamic_sidebar('single-post-left-sidebar'); ?>
+            </aside>
+            <div class="col-lg-8 col-md-10 col-sm-8">
 
                 <?php
                 if (have_posts()) :
@@ -58,6 +62,9 @@ get_header();
                 ?>
 
             </div>
+            <aside id="single-post-sidebar-right" class="widget-area col-lg-2 col-md-1 col-sm-2 me-4">
+                <?php dynamic_sidebar('single-post-right-sidebar'); ?>
+            </aside>
         </div>
 
 
@@ -146,7 +153,7 @@ get_header();
 
         <!--  Hiển thị bài viết liên quan -->
         <?php
-        get_template_part( 'template-parts/navigation' );
+        get_template_part('template-parts/navigation');
         $categories = get_the_category($post->ID);
         if ($categories) {
             $category_ids = array_map(function ($cat) {
@@ -184,15 +191,15 @@ get_header();
         }
         ?>
 
-        
+
         <?php
         // Hiển thị khung bình luận
         if (comments_open() || get_comments_number()) :
-            ?>
-    <div class="post-comments container my-5">
-        <?php comments_template(); ?>
-    </div>
-<?php
+        ?>
+            <div class="post-comments container my-5">
+                <?php comments_template(); ?>
+            </div>
+        <?php
         endif;
         ?>
 
