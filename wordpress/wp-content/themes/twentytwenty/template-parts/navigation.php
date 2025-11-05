@@ -162,8 +162,7 @@ if ( $prev_post || $next_post ) {
 	margin-top: 15px;
 }
 
-.pagination-single .previous-post,
-.pagination-single .next-post {
+.pagination-single .previous-post, {
     flex: 1; /* Cho phép mỗi bên chiếm một nửa không gian */
 }
 
@@ -175,5 +174,17 @@ if ( $prev_post || $next_post ) {
 .pagination-single a:hover .post-title {
     color: #000; /* Giữ nguyên màu đen khi hover */
     text-decoration: none; /* Bỏ gạch chân khi hover */
+}
+
+/* Sửa lỗi căn lề phải cho "Bài viết tiếp theo" */
+.pagination-single .next-post {
+    text-align: right;
+    justify-content: flex-end;
+}
+
+/* Đảm bảo các thành phần bên trong (ngày/tháng/tiêu đề) 
+   cũng được đẩy sang phải */
+.pagination-single .next-post .post-data {
+    justify-content: flex-end;
 }
 </style>
