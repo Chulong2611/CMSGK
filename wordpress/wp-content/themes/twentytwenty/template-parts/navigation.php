@@ -162,11 +162,6 @@ if ( $prev_post || $next_post ) {
 	margin-top: 15px;
 }
 
-.pagination-single .previous-post,
-.pagination-single .next-post {
-    flex: 1; /* Cho phép mỗi bên chiếm một nửa không gian */
-}
-
 /* Đảm bảo link không bị đổi màu khi hover */
 .pagination-single a:hover .title-label,
 .pagination-single a:hover .arrow,
@@ -175,5 +170,25 @@ if ( $prev_post || $next_post ) {
 .pagination-single a:hover .post-title {
     color: #000; /* Giữ nguyên màu đen khi hover */
     text-decoration: none; /* Bỏ gạch chân khi hover */
+}
+
+/* --- SỬA LỖI CĂN LỀ PHẦN ĐIỀU HƯỚNG --- */
+
+/* 1. Đảm bảo 2 khối được đẩy ra 2 bên */
+.pagination-single-inner {
+    display: flex;
+    justify-content: space-between; /* Lệnh quan trọng để đẩy ra 2 bên */
+    width: 100%;
+    align-items: flex-start; /* Căn lề trên cho đẹp */
+}
+
+/* 2. Căn lề phải cho TOÀN BỘ nội dung bên trong "Bài viết tiếp theo" */
+.pagination-single .next-post {
+    text-align: right;
+}
+
+/* 3. Đảm bảo khối ngày/tháng/tiêu đề cũng căn phải */
+.pagination-single .next-post .post-data {
+    justify-content: flex-end; 
 }
 </style>
