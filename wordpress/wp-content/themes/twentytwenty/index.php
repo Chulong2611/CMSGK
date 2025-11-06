@@ -217,6 +217,193 @@ get_header();
 	main#site-content {
 	padding-top: 40px;
 	padding-bottom: 0;}
+
+	/* ========================================= */
+/* === BỐ CỤC TRANG CHỦ 3 CỘT === */
+/* ========================================= */
+
+/* Chỉ áp dụng cho màn hình lớn (desktop) */
+@media (min-width: 1200px) { /* Tăng breakpoint cho 3 cột */
+
+/* Mở rộng không gian nội dung để chứa sidebar */
+.home .section-inner {
+    max-width: 140rem; /* 1400px */
+}
+
+/* Tạo bố cục 3 cột bằng CSS Grid */
+.home .homepage-layout-container {
+    display: grid;
+    /* Sidebar Trái | Nội dung | Sidebar Phải */
+    grid-template-columns: 300px 1fr 300px; 
+    gap: 4rem; /* Khoảng cách giữa các cột */
+}
+
+/* Căn lề cho các sidebar */
+#homepage-sidebar-left,
+#homepage-sidebar-right {
+    margin-top: 5rem; /* Căn chỉnh với bài viết đầu tiên */
+}
+
+
+}
+/* Trên di động (dưới 1200px), các cột sẽ tự động xếp chồng */
+
+/* ========================================= */
+/* === WIDGET BÊN TRÁI (BÀI VIẾT TRONG THÁNG) === */
+/* ========================================= */
+
+#homepage-sidebar-left .widget_child_monthly_posts .widget-title {
+font-size: 2.4rem;
+font-weight: 800;
+color: #333;
+margin-bottom: 1.5rem;
+padding-bottom: 1rem;
+position: relative;
+text-transform: capitalize;
+}
+
+/* Đường gạch chéo */
+#homepage-sidebar-left .widget_child_monthly_posts .widget-title::after {
+content: '';
+display: block;
+width: 100%;
+height: 5px;
+background-image: repeating-linear-gradient(
+-45deg,
+#ccc,
+#ccc 2px,
+transparent 2px,
+transparent 4px
+);
+position: absolute;
+bottom: 0;
+left: 0;
+}
+
+/* Danh sách <ol> */
+#homepage-sidebar-left .monthly-posts-widget-list {
+list-style: none; /* Bỏ list-style mặc định */
+margin: 0;
+border: 1px solid #eee;
+background: #fff;
+padding: 10px 15px;
+border-radius: 4px;
+box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+
+/* Dùng CSS counter để đếm */
+counter-reset: post-counter; 
+padding-left: 45px; /* Tạo không gian cho số thứ tự */
+
+
+}
+
+/* Từng mục <li> */
+#homepage-sidebar-left .monthly-posts-widget-list li {
+padding: 12px 0;
+border-bottom: 1px solid #f0f0f0;
+font-size: 1.6rem;
+line-height: 1.4;
+position: relative;
+
+/* Tăng biến đếm */
+counter-increment: post-counter; 
+
+
+}
+
+#homepage-sidebar-left .monthly-posts-widget-list li:last-child {
+border-bottom: none;
+}
+
+/* Hiển thị số thứ tự (STT) */
+#homepage-sidebar-left .monthly-posts-widget-list li::before {
+/* Hiển thị biến đếm */
+content: counter(post-counter, decimal-leading-zero); /* 01, 02, 03... */
+position: absolute;
+left: -30px; /* Đặt số thứ tự vào khoảng trống */
+top: 50%;
+transform: translateY(-50%);
+font-weight: bold;
+font-size: 1.5rem;
+color: #aaa;
+}
+
+/* Tiêu đề bài viết */
+#homepage-sidebar-left .monthly-posts-widget-list li a {
+text-decoration: none;
+color: #444;
+font-weight: 500;
+}
+
+#homepage-sidebar-left .monthly-posts-widget-list li a:hover {
+color: #000;
+}
+
+/* ========================================= */
+/* === WIDGET BÊN PHẢI (BÌNH LUẬN MỚI - Kiểu Hình 2) === */
+/* ========================================= */
+
+#homepage-sidebar-right .widget_recent_comments .widget-title {
+font-size: 2.2rem; /* Kích thước chữ như Hình 2 */
+font-weight: 600; /* Độ đậm vừa phải */
+color: #333;
+margin-bottom: 1.5rem;
+padding-bottom: 1rem;
+position: relative;
+text-transform: capitalize;
+/* Xóa gạch chéo */
+background-image: none !important;
+}
+
+/* Đường gạch ngang ĐƠN GIẢN dưới tiêu đề (như Hình 2) */
+#homepage-sidebar-right .widget_recent_comments .widget-title::after {
+content: '';
+display: block;
+width: 40px; /* Độ dài đường gạch */
+height: 2px; /* Độ dày */
+background: #ccc; /* Màu xám */
+position: absolute;
+bottom: 0;
+left: 0;
+}
+
+/* Kiểu cho danh sách bình luận đã cắt ngắn (HTML từ PHP) */
+#homepage-sidebar-right .custom-recent-comments {
+list-style: none;
+margin: 0;
+border: none; 
+background: none; 
+padding: 0;
+box-shadow: none; 
+}
+
+/* Mỗi mục bình luận */
+#homepage-sidebar-right .custom-recent-comment-item {
+padding: 10px 0;
+border-bottom: 1px solid #eee; /* Đường gạch mỏng giữa các item */
+font-size: 1.6rem;
+line-height: 1.4;
+}
+
+#homepage-sidebar-right .custom-recent-comment-item:last-child {
+border-bottom: none;
+}
+
+/* Link bình luận */
+#homepage-sidebar-right .custom-recent-comment-item a {
+text-decoration: none;
+color: #007bff; /* Màu xanh link như Hình 2 */
+font-weight: 500;
+}
+
+#homepage-sidebar-right .custom-recent-comment-item a:hover {
+text-decoration: underline; /* Gạch chân khi hover */
+}
+
+/* ẨN giao diện widget mặc định (nếu nó vẫn cố hiển thị) */
+#homepage-sidebar-right .widget_recent_comments ul:not(.custom-recent-comments) {
+display: none;
+}
 </style>
 <?php
 get_footer();
