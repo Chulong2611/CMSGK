@@ -945,76 +945,88 @@ function twentytwenty_child_widgets_init()
 }
 add_action('widgets_init', 'twentytwenty_child_widgets_init');
 
+// ===================================================================
+// == WIDGET CỘT PHẢI (BÌNH LUẬN TÙY CHỈNH)
+// ===================================================================
+
 /**
- * Tùy chỉnh đầu ra của widget "Bình luận mới"
- * để chỉ hiển thị nội dung cắt ngắn 20 ký tự.
+ * Tạo một widget tùy chỉnh mới để hiển thị bình luận cắt ngắn.
  */
-function twentytwenty_child_custom_recent_comments($instance, $widget, $args)
-{
+class Child_Custom_Comments_Widget extends WP_Widget {
 
-	// Chỉ can thiệp vào widget "Bình luận mới" (recent-comments)
-	// Nếu widget của bạn có ID khác, nó sẽ không chạy
-	if ('recent-comments' !== $widget->id_base) {
-		return $instance;
-	}
+    public function __construct() {
+        parent::__construct(
+            'child_custom_comments', // Base ID
+            __( 'Bình luận tùy chỉnh (Cắt ngắn)', 'twentytwenty-child' ), // Tên hiển thị
+            array( 'description' => __( 'Hiển thị bình luận mới nhất đã được cắt ngắn.', 'twentytwenty-child' ) )
+        );
+    }
 
-	// Lấy cài đặt của widget
-	$number = ! empty($instance['number']) ? absint($instance['number']) : 5;
+    public function widget( $args, $instance ) {
+        echo $args['before_widget'];
+        
+        $title = apply_filters( 'widget_title', empty( $instance['title'] ) ? __( 'Bình luận mới', 'twentytwenty-child' ) : $instance['title'] );
+        $number = ! empty( $instance['number'] ) ? absint( $instance['number'] ) : 5;
 
-	// Lấy bình luận
-	$comments = get_comments(
-		array(
-			'number' => $number,
-			'status' => 'approve',
-			'post_status' => 'publish',
-		)
-	);
+        echo $args['before_title'] . $title . $args['after_title'];
+        
+        $comments = get_comments(
+            array(
+                'number' => $number,
+                'status' => 'approve',
+                'post_status' => 'publish',
+            )
+        );
 
-	// Bắt đầu xuất ra HTML tùy chỉnh
-	echo $args['before_widget'];
+        if ( ! empty( $comments ) ) {
+            echo '<ul class="custom-recent-comments">'; // Class này để CSS
+            foreach ( $comments as $comment ) {
+                $comment_text = wp_strip_all_tags( $comment->comment_content );
+                $comment_text = html_entity_decode( $comment_text, ENT_QUOTES, 'UTF-8' );
+                
+                $excerpt = '';
+                if ( mb_strlen( $comment_text, 'UTF-8' ) > 20 ) {
+                    $excerpt = mb_substr( $comment_text, 0, 20, 'UTF-8' ) . '...';
+                } else {
+                    $excerpt = $comment_text;
+                }
+                
+                $comment_link = get_comment_link( $comment );
 
-	$title = apply_filters('widget_title', $instance['title']);
-	if (! empty($title)) {
-		echo $args['before_title'] . $title . $args['after_title'];
-	}
+                echo '<li class="custom-recent-comment-item">';
+                echo '<a href="' . esc_url( $comment_link ) . '">' . esc_html( $excerpt ) . '</a>';
+                echo '</li>';
+            }
+            echo '</ul>';
+        } else {
+            echo '<p>Chưa có bình luận nào.</p>';
+        }
+        
+        echo $args['after_widget'];
+    }
 
-	if (! empty($comments)) {
-		// Class này để chúng ta tạo kiểu CSS
-		echo '<ul class="custom-recent-comments">';
+    public function form( $instance ) {
+        $title = ! empty( $instance['title'] ) ? $instance['title'] : __( 'Bình luận mới', 'twentytwenty-child' );
+        $number = ! empty( $instance['number'] ) ? absint( $instance['number'] ) : 5;
+        ?>
+        <p>
+            <label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php _e( 'Tiêu đề:', 'twentytwenty-child' ); ?></label> 
+            <input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
+        </p>
+        <p>
+            <label for="<?php echo esc_attr( $this->get_field_id( 'number' ) ); ?>"><?php _e( 'Số lượng bình luận:', 'twentytwenty-child' ); ?></label> 
+            <input class="tiny-text" id="<?php echo esc_attr( $this->get_field_id( 'number' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'number' ) ); ?>" type="number" step="1" min="1" value="<?php echo esc_attr( $number ); ?>" size="3">
+        </p>
+        <?php 
+    }
 
-		foreach ($comments as $comment) {
-
-			// 1. Lấy nội dung, loại bỏ HTML, và giải mã các ký tự
-			$comment_text = wp_strip_all_tags($comment->comment_content);
-			$comment_text = html_entity_decode($comment_text, ENT_QUOTES, 'UTF-8');
-
-			// 2. Cắt chuỗi 20 ký tự (an toàn cho Tiếng Việt)
-			$excerpt = '';
-			if (mb_strlen($comment_text, 'UTF-8') > 20) {
-				$excerpt = mb_substr($comment_text, 0, 20, 'UTF-8') . '...';
-			} else {
-				$excerpt = $comment_text;
-			}
-
-			// 3. Lấy link của bình luận
-			$comment_link = get_comment_link($comment);
-
-			// 4. Chỉ xuất ra nội dung (đã cắt ngắn)
-			echo '<li class="custom-recent-comment-item">';
-			echo '<a href="' . esc_url($comment_link) . '">' . esc_html($excerpt) . '</a>';
-			echo '</li>';
-		}
-		echo '</ul>';
-	} else {
-		echo '<p>Chưa có bình luận nào.</p>';
-	}
-
-	echo $args['after_widget'];
-
-	// Quan trọng: Trả về false để ngăn widget gốc chạy
-	return false;
-}
-add_filter('widget_display_callback', 'twentytwenty_child_custom_recent_comments', 10, 3);
+    public function update( $new_instance, $old_instance ) {
+        $instance = array();
+        $instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+        $instance['number'] = ( ! empty( $new_instance['number'] ) ) ? absint( $new_instance['number'] ) : 5;
+        return $instance;
+    }
+} // Kết thúc class Child_Custom_Comments_Widget
 
 // ===================================================================
 // == CODE MỚI: TẠO WIDGET "BÀI VIẾT TRONG THÁNG" (CỘT TRÁI)
@@ -1110,5 +1122,6 @@ class Child_Monthly_Posts_Widget extends WP_Widget
 function twentytwenty_child_register_custom_widgets()
 {
 	register_widget('Child_Monthly_Posts_Widget');
+	register_widget( 'Child_Custom_Comments_Widget'); 
 }
 add_action('widgets_init', 'twentytwenty_child_register_custom_widgets');
