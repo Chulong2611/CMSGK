@@ -340,28 +340,34 @@ color: #000;
 }
 
 /* ========================================= */
-/* === WIDGET BÊN PHẢI (BÌNH LUẬN MỚI - Kiểu Hình 2) === */
+/* === WIDGET BÊN PHẢI (BÌNH LUẬN TÙY CHỈNH) === */
 /* ========================================= */
 
-#homepage-sidebar-right .widget_recent_comments .widget-title {
-font-size: 2.2rem; /* Kích thước chữ như Hình 2 */
-font-weight: 600; /* Độ đậm vừa phải */
+/* ID của widget mới là 'child_custom_comments' */
+#homepage-sidebar-right .widget_child_custom_comments .widget-title {
+font-size: 2.2rem;
+font-weight: 600; 
 color: #333;
 margin-bottom: 1.5rem;
 padding-bottom: 1rem;
 position: relative;
 text-transform: capitalize;
-/* Xóa gạch chéo */
 background-image: none !important;
 }
 
 /* Đường gạch ngang ĐƠN GIẢN dưới tiêu đề (như Hình 2) */
-#homepage-sidebar-right .widget_recent_comments .widget-title::after {
+#homepage-sidebar-right .widget_child_custom_comments .widget-title::after {
 content: '';
 display: block;
-width: 40px; /* Độ dài đường gạch */
-height: 2px; /* Độ dày */
-background: #ccc; /* Màu xám */
+width: 100%;
+height: 5px;
+background-image: repeating-linear-gradient(
+-45deg,
+#ccc,
+#ccc 2px,
+transparent 2px,
+transparent 4px
+);
 position: absolute;
 bottom: 0;
 left: 0;
@@ -369,12 +375,13 @@ left: 0;
 
 /* Kiểu cho danh sách bình luận đã cắt ngắn (HTML từ PHP) */
 #homepage-sidebar-right .custom-recent-comments {
-list-style: none;
+list-style: none; /* Bỏ list-style mặc định */
 margin: 0;
-border: none; 
-background: none; 
-padding: 0;
-box-shadow: none; 
+border: 1px solid #eee;
+background: #fff;
+padding: 10px 15px;
+border-radius: 4px;
+box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
 /* Mỗi mục bình luận */
@@ -393,16 +400,11 @@ border-bottom: none;
 #homepage-sidebar-right .custom-recent-comment-item a {
 text-decoration: none;
 color: #007bff; /* Màu xanh link như Hình 2 */
-font-weight: 500;
+font-weight: bold;
 }
 
 #homepage-sidebar-right .custom-recent-comment-item a:hover {
 text-decoration: underline; /* Gạch chân khi hover */
-}
-
-/* ẨN giao diện widget mặc định (nếu nó vẫn cố hiển thị) */
-#homepage-sidebar-right .widget_recent_comments ul:not(.custom-recent-comments) {
-display: none;
 }
 </style>
 <?php
