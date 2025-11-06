@@ -21,7 +21,7 @@ get_header();
         </aside>
 
         <!-- CỘT 2: NỘI DUNG CHÍNH (Code của bạn) -->
-        <div class="homepage-main-content">
+        <div class="homepage-main-content" style="margin: 60px 0;">
 
             <?php
             $archive_title    = '';
@@ -198,7 +198,7 @@ get_header();
             }
             ?>
 
-            <?php get_template_part( 'template-parts/pagination' ); ?>
+            <?php get_template_part( 'template-parts/pagination'); ?>
 
 
         </div> <!-- .homepage-main-content -->
