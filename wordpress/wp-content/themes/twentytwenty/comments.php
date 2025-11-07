@@ -14,11 +14,11 @@ if (post_password_required()) {
         <h3 class="comments-title"><?php echo get_comments_number(); ?> Bình luận</h3>
 
         <ul class="comment-list">
-            <?php
+          <?php
             wp_list_comments([
                 'style'      => 'ul',
                 'short_ping' => true,
-                'avatar_size' => 60,
+                'avatar_size' => 60, // Kích thước avatar
                 'callback' => function ($comment, $args, $depth) {
             ?>
                     <li <?php comment_class(); ?> id="comment-<?php comment_ID(); ?>">
@@ -27,14 +27,21 @@ if (post_password_required()) {
                                 <?php echo get_avatar($comment, 60); ?>
                             </div>
                             <div class="comment-content">
+                                
+                                <hr class="comment-top-line" /> 
+                                
                                 <div class="comment-author">
                                     <strong><?php comment_author(); ?></strong>
-                                    <span class="comment-date"><?php echo get_comment_date(); ?></span>
                                 </div>
+                                
                                 <div class="comment-text"><?php comment_text(); ?></div>
-                                <?php if (is_user_logged_in()) : ?>
-                                    <button class="reply-btn" data-commentid="<?php comment_ID(); ?>">Reply</button>
-                                <?php endif; ?>
+
+                                <div class="comment-meta">
+                                    <span class="comment-date"><?php echo get_comment_date(); ?></span>
+                                    <?php if (is_user_logged_in()) : ?>
+                                        <button class="reply-btn" data-commentid="<?php comment_ID(); ?>">Reply</button>
+                                    <?php endif; ?>
+                                </div>
                             </div>
                         </div>
                     </li>
@@ -73,6 +80,28 @@ if (post_password_required()) {
 
 <!-- ✅ STYLE -->
 <style>
+/* Đường kẻ ngang trên cùng */
+hr.comment-top-line {
+    border: 0;
+    border-top: 1px solid #eee;
+    margin: 0 0 10px 0;
+}
+
+/* Bọc nội dung text */
+.comment-text {
+    margin-bottom: 10px; /* Tạo khoảng cách cho meta */
+    color: #333; /* Màu chữ như hình */
+    line-height: 1.5;
+}
+
+/* Bọc (ngày) và (nút reply) */
+.comment-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
 .comment-list {
     list-style: none;
     padding: 0;
@@ -82,7 +111,6 @@ if (post_password_required()) {
     display: flex;
     align-items: flex-start;
     margin-bottom: 25px;
-    border-bottom: 1px solid #eee;
     padding-bottom: 15px;
 }
 .comment-avatar img {
@@ -94,24 +122,26 @@ if (post_password_required()) {
 }
 .comment-author {
     font-weight: bold;
+    color: #333;
     color: #007bff;
+    margin-bottom: 8px;
 }
 .comment-date {
     font-size: 13px;
     color: #777;
-    margin-left: 8px;
 }
 .reply-btn {
-    background: #007bff;
-    color: white;
+    background: none; /* Bỏ nền */
+    color: #007bff; /* Chỉ là text link */
     border: none;
-    padding: 6px 10px;
-    border-radius: 6px;
+    padding: 0; /* Bỏ padding */
     cursor: pointer;
-    font-size: 14px;
+    font-size: 13px; /* Kích thước font nhỏ */
+    font-weight: 600;
 }
 .reply-btn:hover {
-    background: #007bff;
+    background: none; /* Bỏ hover */
+    text-decoration: underline;
 }
 .comment-form-wrapper {
     background: #f9f9f9;
