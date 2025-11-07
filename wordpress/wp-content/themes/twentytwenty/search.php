@@ -27,7 +27,7 @@ get_header();
                     'orderby'        => 'rand',       // Sắp xếp ngẫu nhiên
                 );
 
-                $custom_pages_query = new WP_Query( $args );
+                $custom_pages_query = new WP_Query($args);
 
                 if ($custom_pages_query->have_posts()) :
                     echo '<ul>';
@@ -260,6 +260,59 @@ get_header();
 
     </div> <!-- .homepage-layout-container -->
     <!-- === KẾT THÚC CẤU TRÚC 3 CỘT === -->
+
+    <!-- ========================================= -->
+    <!-- === SECTION LATEST NEWS THEO DÒNG THỜI GIAN === -->
+    <section class="latest-news-timeline-section">
+        <div class="latest-news-container">
+            <h2 class="timeline-section-title">Bài viết mới nhất</h2>
+            <?php
+            // Truy vấn 3 bài viết 'post' mới nhất
+            $latest_posts_args = array(
+                'post_type'      => 'post',
+                'posts_per_page' => 3,
+                'orderby'        => 'date',
+                'order'          => 'DESC',
+            );
+            $latest_posts_query = new WP_Query($latest_posts_args);
+
+            if ($latest_posts_query->have_posts()) :
+            ?>
+                <ul class="timeline-list">
+                    <?php
+                    while ($latest_posts_query->have_posts()) :
+                        $latest_posts_query->the_post();
+                    ?>
+                        <li class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-header">
+                                    <h3 class="timeline-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
+                                    <span class="timeline-date"><?php echo get_the_date('j F, Y'); ?></span>
+                                </div>
+                                <div class="timeline-excerpt">
+                                    <?php
+                                    // Hiển thị đoạn trích ngắn
+                                    echo wp_trim_words(get_the_excerpt(), 25, '...');
+                                    ?>
+                                </div>
+                            </div>
+                        </li>
+                    <?php
+                    endwhile;
+                    ?>
+                </ul>
+            <?php
+            else :
+                // Thông báo nếu không có bài viết nào
+                echo '<p>Chưa có bài viết nào.</p>';
+            endif;
+
+            // Khôi phục lại dữ liệu post gốc
+            wp_reset_postdata();
+            ?>
+        </div>
+    </section>
 
 </main><!-- #site-content -->
 
@@ -583,6 +636,154 @@ get_header();
     /* Tiêu đề trang */
     #homepage-sidebar-left .page-item-title {
         line-height: 1.4;
+    }
+
+
+    /* ========================================= */
+    /* === TIMELINE BÀI VIẾT MỚI NHẤT === */
+    /* ========================================= */
+
+    .latest-news-timeline-section {
+        width: 100%;
+        padding: 40px 0;
+        /* Tạo khoảng cách với phần trên */
+        border-top: 1px solid #eee;
+        /* Đường kẻ mờ phân cách */
+        margin-top: 40px;
+    }
+
+    .latest-news-container {
+        /* Căn giữa và giới hạn 2/3 chiều rộng */
+        width: 66.66%;
+        /* Giới hạn thêm để không quá rộng trên màn hình lớn */
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .timeline-section-title {
+        font-size: 2.8rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 30px;
+    }
+
+    .timeline-list {
+        list-style: none;
+        padding-left: 20px;
+        margin: 0;
+        position: relative;
+        /* Dùng để căn đường line */
+    }
+
+    /* Đường line dọc (trục timeline) */
+    .timeline-list::before {
+        content: '';
+        position: absolute;
+        top: 10px;
+        /* Bắt đầu sau dấu chấm đầu tiên */
+        bottom: 10px;
+        /* Kết thúc trước dấu chấm cuối cùng */
+        left: 7px;
+        /* Căn giữa với dấu chấm (8px - 1px) */
+        width: 2px;
+        background-color: #00aaff;
+        /* Màu xanh_ */
+        opacity: 0.5;
+        z-index: 1;
+    }
+
+    .timeline-item {
+        position: relative;
+        padding-left: 35px;
+        /* Không gian cho dấu chấm */
+        margin-bottom: 35px;
+    }
+
+    /* Dấu chấm tròn */
+    .timeline-item .timeline-dot {
+        position: absolute;
+        left: 0;
+        top: 5px;
+        /* Căn với dòng tiêu đề */
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background-color: #fff;
+        border: 3px solid #00aaff;
+        /* Màu xanh */
+        z-index: 2;
+        /* Nằm trên đường line */
+    }
+
+    /* Tiêu đề và Ngày */
+    .timeline-content .timeline-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        /* Căn trên cùng */
+        margin-bottom: 5px;
+    }
+
+    .timeline-content .timeline-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin: 0;
+        line-height: 1.4;
+    }
+
+    .timeline-content .timeline-title a {
+        text-decoration: none;
+        color: #00aaff;
+        /* Màu xanh */
+    }
+
+    .timeline-content .timeline-title a:hover {
+        text-decoration: underline;
+    }
+
+    .timeline-content .timeline-date {
+        font-size: 1.4rem;
+        color: #999;
+        flex-shrink: 0;
+        /* Không bị co lại */
+        padding-left: 15px;
+        /* Khoảng cách với tiêu đề */
+        white-space: nowrap;
+        /* Không xuống dòng */
+    }
+
+    /* Đoạn trích */
+    .timeline-content .timeline-excerpt {
+        font-size: 1.5rem;
+        color: #555;
+        line-height: 1.5;
+    }
+
+    /* Responsive (cho thiết bị nhỏ hơn) */
+    @media (max-width: 900px) {
+        .latest-news-container {
+            width: 90%;
+            /* Chiếm 90% trên tablet */
+        }
+    }
+
+    @media (max-width: 600px) {
+        .latest-news-container {
+            width: 95%;
+            /* Gần full trên mobile */
+        }
+
+        /* Trên mobile, đưa ngày xuống dưới tiêu đề */
+        .timeline-content .timeline-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .timeline-content .timeline-date {
+            padding-left: 0;
+            margin-top: 5px;
+            color: #777;
+        }
     }
 </style>
 <?php
