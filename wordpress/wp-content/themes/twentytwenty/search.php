@@ -669,7 +669,6 @@ get_header();
 
     .timeline-list {
         list-style: none;
-        padding-left: 20px;
         margin: 0;
         position: relative;
         /* Dùng để căn đường line */
@@ -683,7 +682,7 @@ get_header();
         /* Bắt đầu sau dấu chấm đầu tiên */
         bottom: 10px;
         /* Kết thúc trước dấu chấm cuối cùng */
-        left: 7px;
+        left: 27px;
         /* Căn giữa với dấu chấm (8px - 1px) */
         width: 2px;
         background-color: #00aaff;
