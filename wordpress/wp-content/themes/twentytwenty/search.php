@@ -493,10 +493,6 @@ get_header();
     /* === WIDGET DANH SÁCH PAGES BÊN TRÁI === */
     /* ========================================= */
 
-    #homepage-sidebar-left .pages-list-widget {
-        /* CSS cho tiêu đề widget (giống "Bài Viết Trong Tháng") */
-    }
-
     #homepage-sidebar-left .pages-list-widget .widget-title {
         font-size: 2.4rem;
         font-weight: 800;
