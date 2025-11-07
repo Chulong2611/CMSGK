@@ -19,10 +19,23 @@
 	<div class="container">
 		<div class="row text-center text-xs-center text-sm-left text-md-left">
 			<div class="col-xs-12 col-sm-4 col-md-4">
-				<h5>CMS</h5>
+
 				<ul class="list-unstyled quick-links">
-					<li><a href="http://localhost:8333/"><i class="fa fa-angle-double-right"></i>Trang chủ</a></li>
-				</ul>
+					<?php
+					the_widget(
+						'WP_Widget_Pages', // Tên class của widget
+						array(
+							'title'    => 'Các Trang Của Tôi', // Tiêu đề bạn muốn
+							'sortby'   => 'menu_order',   // Sắp xếp theo thứ tự menu (hoặc 'post_title', 'ID')
+						),
+						array(
+							'before_widget' => '<div class="widget_pages">',
+							'after_widget'  => '</div>',
+							'before_title'  => '<h5 class="widget-title">',
+							'after_title'   => '</h5>'
+						)
+					);
+					?> </ul>
 			</div>
 			<div class="col-xs-12 col-sm-4 col-md-4">
 				<ul class="list-unstyled quick-links">
@@ -106,39 +119,58 @@
 <style>
 	/* bai viet moi nhat*/
 	.widget_recent_posts ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
 
-/* Thêm icon Font Awesome 7 trước mỗi tiêu đề bài viết trong widget */
-.widget_recent_posts ul li::before {
-    font-family: "Font Awesome 7 Free";
-    font-weight: 700; /* solid */
-    content: "\f101"; /* fa-angles-right */
-    color: #fff;
-    background-color: #00785c;
-    padding: 4px 6px;
-    border-radius: 3px;
-    margin-right: 8px;
-    font-size: 1em;
-    transition: all 0.3s ease;
-}
+	/* Thêm icon Font Awesome 7 trước mỗi tiêu đề trang trong widget */
+	.widget_pages ul li::before {
+		font-family: "Font Awesome 7 Free";
+		font-weight: 700;
+		/* solid */
+		content: "\f101";
+		/* fa-angles-right */
+		color: #fff;
+		background-color: #00785c;
+		padding: 4px 6px;
+		border-radius: 3px;
+		margin-right: 8px;
+		font-size: 1em;
+		transition: all 0.3s ease;
+	}
 
-/* Thêm icon Font Awesome 7 trước mỗi comment trong widget */
-.widget_recent_comments ul li::before {
-    font-family: "Font Awesome 7 Free";
-    font-weight: 900; /* solid */
-    content: "\f101"; /* fa-angles-right */
-    color: #fff;
-    background-color: #00785c;
-    padding: 4px 6px;
-    border-radius: 3px;
-    margin-right: 8px;
-    font-size: 1em;
-    transition: all 0.3s ease;
-}
+	/* Thêm icon Font Awesome 7 trước mỗi tiêu đề bài viết trong widget */
+	.widget_recent_posts ul li::before {
+		font-family: "Font Awesome 7 Free";
+		font-weight: 700;
+		/* solid */
+		content: "\f101";
+		/* fa-angles-right */
+		color: #fff;
+		background-color: #00785c;
+		padding: 4px 6px;
+		border-radius: 3px;
+		margin-right: 8px;
+		font-size: 1em;
+		transition: all 0.3s ease;
+	}
 
+	/* Thêm icon Font Awesome 7 trước mỗi comment trong widget */
+	.widget_recent_comments ul li::before {
+		font-family: "Font Awesome 7 Free";
+		font-weight: 900;
+		/* solid */
+		content: "\f101";
+		/* fa-angles-right */
+		color: #fff;
+		background-color: #00785c;
+		padding: 4px 6px;
+		border-radius: 3px;
+		margin-right: 8px;
+		font-size: 1em;
+		transition: all 0.3s ease;
+	}
 </style>
 
 </html>
